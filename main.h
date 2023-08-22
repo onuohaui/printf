@@ -5,6 +5,7 @@
 #include <unistd.h>
 
 int _printf(const char *format, ...);
+int handle_specifier(char spec, va_list args, char *buffer, int len);
 char *int_to_string(int n, char *buffer);
 int _putchar(char c);
 void print_char(va_list args);

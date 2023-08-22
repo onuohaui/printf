@@ -1,65 +1,81 @@
 #include "main.h"
 
-#define BUFFER_SIZE 1024
-
 /**
- * _printf - Our custom printf function.
- * @format: The format string.
- * ... : The values to format and print.
- * Return: The number of characters printed.
+ * _printf - custom printf function
+ * @format: the format string
+ * ...: the list of arguments passed to the function
+ *
+ * Return: number of characters printed
  */
 int _printf(const char *format, ...)
 {
-	unsigned int i = 0, count = 0, buf_index = 0;
-	char buffer[BUFFER_SIZE];
 	va_list args;
+	unsigned int i = 0, len = 0;
+	char *buffer;
 
 	if (!format)
 		return (-1);
 
 	va_start(args, format);
+	buffer = malloc(sizeof(char) * 1024);
+
+	if (!buffer)
+		return (-1);
+
 	while (format && format[i])
 	{
-		if (buf_index == BUFFER_SIZE - 1)
-		{
-			write(1, buffer, buf_index);
-			count += buf_index;
-			buf_index = 0;
-		}
-
 		if (format[i] == '%' && (format[i + 1] == 'c' || format[i + 1] == 's' || format[i + 1] == '%'))
 		{
-			switch (format[i + 1])
-			{
-				case 'c':
-					buffer[buf_index++] = (char) va_arg(args, int);
-					i++;
-					break;
-				case 's':
-					char *str = va_arg(args, char *);
-					while (*str && buf_index < BUFFER_SIZE - 1)
-						buffer[buf_index++] = *str++;
-					i++;
-					break;
-				case '%':
-					buffer[buf_index++] = '%';
-					i++;
-					break;
-			}
+			len += handle_specifier(format[i + 1], args, buffer, len);
+			i++;
 		}
 		else
 		{
-			buffer[buf_index++] = format[i];
+			buffer[len++] = format[i];
 		}
 		i++;
 	}
+
+	write(1, buffer, len);
+	free(buffer);
 	va_end(args);
+	return (len);
+}
 
-	if (buf_index > 0)
+/**
+ * handle_specifier - handles format specifiers
+ * @spec: the specifier character
+ * @args: the va_list containing the function arguments
+ * @buffer: the output buffer
+ * @len: the current length of the buffer
+ *
+ * Return: number of characters added to the buffer
+ */
+int handle_specifier(char spec, va_list args, char *buffer, int len)
+{
+	char *str;
+	char c;
+	int added_len = 0;
+
+	switch (spec)
 	{
-		write(1, buffer, buf_index);
-		count += buf_index;
+		case 'c':
+			c = va_arg(args, int);
+			buffer[len] = c;
+			added_len = 1;
+			break;
+		case 's':
+			str = va_arg(args, char*);
+			while (*str)
+			{
+				buffer[len++] = *str++;
+				added_len++;
+			}
+			break;
+		case '%':
+			buffer[len] = '%';
+			added_len = 1;
+			break;
 	}
-
-	return (count);
+	return added_len;
 }
