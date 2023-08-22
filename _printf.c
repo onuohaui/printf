@@ -4,43 +4,44 @@
 /**
  * _printf - Print formatted output
  * @format: Format string
- *
  * Description: Prints formatted output based on format string.
  * Format specifiers supported:
  * %c - Print single character
  * %s - Print string
  * %% - Print literal '%' character
- *
  * Other characters are printed as is.
- *
  * Return: Number of characters printed
  */
-
 int _printf(const char *format, ...)
 {
-	unsigned int i = 0, count = 0;
+	unsigned int count = 0;
+	unsigned int i = 0;
 	va_list args;
+
+	if (format == NULL)
+		return (-1);
 
 	va_start(args, format);
 
-	while (format && format[i])
+	while (format[i])
 	{
-		if (format[i] == '%' &&
-				(format[i + 1] == 'c' || format[i + 1] == 's' || format[i + 1] == '%'))
+		if (format[i] == '%')
 		{
-			switch (format[i + 1])
+			i++;
+			switch (format[i])
 			{
 				case 'c':
 					count += _putchar(va_arg(args, int));
-					i++;
 					break;
 				case 's':
 					count += _print_string(va_arg(args, char *));
-					i++;
 					break;
 				case '%':
 					count += _putchar('%');
-					i++;
+					break;
+				default:
+					count += _putchar('%');
+					count += _putchar(format[i]);
 					break;
 			}
 		}
