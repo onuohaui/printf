@@ -1,81 +1,74 @@
 #include "main.h"
+#include <stdarg.h>
 
 /**
- * _printf - custom printf function
- * @format: the format string
- * ...: the list of arguments passed to the function
+ * _printf - Print formatted output
+ * @format: Format string
  *
- * Return: number of characters printed
+ * Description: Prints formatted output based on format string.
+ * Format specifiers supported:
+ * %c - Print single character
+ * %s - Print string
+ * %% - Print literal '%' character
+ *
+ * Other characters are printed as is.
+ *
+ * Return: Number of characters printed
  */
+
 int _printf(const char *format, ...)
 {
+	unsigned int i = 0, count = 0;
 	va_list args;
-	unsigned int i = 0, len = 0;
-	char *buffer;
-
-	if (!format)
-		return (-1);
 
 	va_start(args, format);
-	buffer = malloc(sizeof(char) * 1024);
-
-	if (!buffer)
-		return (-1);
 
 	while (format && format[i])
 	{
-		if (format[i] == '%' && (format[i + 1] == 'c' || format[i + 1] == 's' || format[i + 1] == '%'))
+		if (format[i] == '%' &&
+				(format[i + 1] == 'c' || format[i + 1] == 's' || format[i + 1] == '%'))
 		{
-			len += handle_specifier(format[i + 1], args, buffer, len);
-			i++;
+			switch (format[i + 1])
+			{
+				case 'c':
+					count += _putchar(va_arg(args, int));
+					i++;
+					break;
+				case 's':
+					count += _print_string(va_arg(args, char *));
+					i++;
+					break;
+				case '%':
+					count += _putchar('%');
+					i++;
+					break;
+			}
 		}
 		else
 		{
-			buffer[len++] = format[i];
+			count += _putchar(format[i]);
 		}
 		i++;
 	}
 
-	write(1, buffer, len);
-	free(buffer);
 	va_end(args);
-	return (len);
+	return (count);
 }
 
 /**
- * handle_specifier - handles format specifiers
- * @spec: the specifier character
- * @args: the va_list containing the function arguments
- * @buffer: the output buffer
- * @len: the current length of the buffer
- *
- * Return: number of characters added to the buffer
+ * _print_string - Prints a string to stdout
+ * @s: Pointer to the string to be printed
+ * Return: number of characters printed
  */
-int handle_specifier(char spec, va_list args, char *buffer, int len)
-{
-	char *str;
-	char c;
-	int added_len = 0;
 
-	switch (spec)
+int _print_string(char *s)
+{
+	int count = 0;
+
+	while (*s)
 	{
-		case 'c':
-			c = va_arg(args, int);
-			buffer[len] = c;
-			added_len = 1;
-			break;
-		case 's':
-			str = va_arg(args, char*);
-			while (*str)
-			{
-				buffer[len++] = *str++;
-				added_len++;
-			}
-			break;
-		case '%':
-			buffer[len] = '%';
-			added_len = 1;
-			break;
+		count += _putchar(*s);
+		s++;
 	}
-	return added_len;
+	return (count);
 }
