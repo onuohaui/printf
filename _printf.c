@@ -1,62 +1,65 @@
 #include "main.h"
 
+#define BUFFER_SIZE 1024
+
 /**
- * _printf - Custom printf function.
+ * _printf - Our custom printf function.
  * @format: The format string.
- * Return: Number of characters printed.
+ * ... : The values to format and print.
+ * Return: The number of characters printed.
  */
 int _printf(const char *format, ...)
 {
-	unsigned int i = 0, count = 0;
+	unsigned int i = 0, count = 0, buf_index = 0;
+	char buffer[BUFFER_SIZE];
 	va_list args;
+
+	if (!format)
+		return (-1);
 
 	va_start(args, format);
 	while (format && format[i])
 	{
-		if (format[i] == '%' &&
-				(format[i + 1] == 'c' || format[i + 1] == 's' || format[i + 1] == '%'))
+		if (buf_index == BUFFER_SIZE - 1)
+		{
+			write(1, buffer, buf_index);
+			count += buf_index;
+			buf_index = 0;
+		}
+
+		if (format[i] == '%' && (format[i + 1] == 'c' || format[i + 1] == 's' || format[i + 1] == '%'))
 		{
 			switch (format[i + 1])
 			{
 				case 'c':
-					count += _putchar(va_arg(args, int));
+					buffer[buf_index++] = (char) va_arg(args, int);
 					i++;
 					break;
 				case 's':
-					count += _print_string(va_arg(args, char *));
+					char *str = va_arg(args, char *);
+					while (*str && buf_index < BUFFER_SIZE - 1)
+						buffer[buf_index++] = *str++;
 					i++;
 					break;
 				case '%':
-					count += _putchar('%');
+					buffer[buf_index++] = '%';
 					i++;
 					break;
 			}
 		}
 		else
 		{
-			count += _putchar(format[i]);
+			buffer[buf_index++] = format[i];
 		}
 		i++;
 	}
 	va_end(args);
-	return (count);
-}
 
-/**
- * _print_string - Prints a string.
- * @s: The string to print.
- * Return: Number of characters printed.
- */
-int _print_string(char *s)
-{
-	int count = 0;
-
-	if (s == NULL)
-		s = "(null)";
-	while (*s)
+	if (buf_index > 0)
 	{
-		count += _putchar(*s);
-		s++;
+		write(1, buffer, buf_index);
+		count += buf_index;
 	}
+
 	return (count);
 }
