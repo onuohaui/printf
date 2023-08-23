@@ -1,7 +1,7 @@
 #include "main.h"
+#include <stdarg.h>
 
 /**
-<<<<<<< HEAD
  * _printf - Print formatted output
  * @format: Format string
  * Description: Prints formatted output based on format string.
@@ -11,38 +11,23 @@
  * %% - Print literal '%' character
  * Other characters are printed as is.
  * Return: Number of characters printed
-=======
- * _printf - Custom printf function.
- * @format: The format string.
- * Return: Number of characters printed.
->>>>>>> origin/Amyb
  */
 int _printf(const char *format, ...)
 {
-	unsigned int count = 0;
-	unsigned int i = 0;
-	va_list args;
-
 	if (format == NULL)
 		return (-1);
 
+	unsigned int i, count;
+	va_list args;
+
+	i = 0;
+	count = 0;
+
 	va_start(args, format);
-<<<<<<< HEAD
 
 	while (format[i])
 	{
-
 		if (format[i] == '%')
-
-		if (format[i] == '%' && (format[i + 1] == 'c' || format[i + 1] == 's' ||
-					format[i + 1] == '%' || format[i + 1] == 'd' ||
-					format[i + 1] == 'i'))
-=======
-	while (format && format[i])
-	{
-		if (format[i] == '%' &&
-				(format[i + 1] == 'c' || format[i + 1] == 's' || format[i + 1] == '%'))
->>>>>>> origin/Amyb
 		{
 			i++;
 			switch (format[i])
@@ -68,21 +53,20 @@ int _printf(const char *format, ...)
 		}
 		i++;
 	}
+
 	va_end(args);
 	return (count);
 }
 
 /**
- * _print_string - Prints a string.
- * @s: The string to print.
- * Return: Number of characters printed.
+ * _print_string - Prints a string to stdout
+ * @s: Pointer to the string to be printed
+ * Return: number of characters printed
  */
 int _print_string(char *s)
 {
 	int count = 0;
 
-	if (s == NULL)
-		s = "(null)";
 	while (*s)
 	{
 		count += _putchar(*s);
