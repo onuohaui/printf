@@ -1,83 +1,94 @@
 #include "main.h"
+#include <stdio.h>
 #include <stdarg.h>
 
 /**
- * _printf - Print formatted output
- * @format: Format string
- * Description: Prints formatted output based on format string.
- * Format specifiers supported:
- * %c - Print single character
- * %s - Print string
- * %% - Print literal '%' character
- * Other characters are printed as is.
- * Return: Number of characters printed
+ * print_char - Print a character
+ * @args: va_list containing the character to print
+ * @count: Current character count
+ *
+ * Return: Updated character count
  */
-int _printf(const char *format, ...)
+int print_char(va_list args, int count)
 {
-	unsigned int i = 0, len = 0, ibuf = 0;
-	va_list arguments;
-	int (*function)(va_list, char *, unsigned int);
-	char *buffer;
+	int c = va_arg(args, int);
 
-	va_start(arguments, format), buffer = malloc(sizeof(char) * 1024);
-	if (!format || !buffer || (format[i] == '%' && !format[i + 1]))
-		return (-1);
-	if (!format[i])
-		return (0);
-	for (i = 0; format && format[i]; i++)
-
-	{
-		if (format[i] == '%')
-		{
-			if (format[i + 1] == '\0')
-			{	print_buf(buffer, ibuf), free(buffer), va_end(arguments);
-				return (-1);
-			}
-			else
-			{	function = get_print_func(format, i + 1);
-				if (function == NULL)
-				{
-					if (format[i + 1] == ' ' && !format[i + 2])
-						return (-1);
-					handl_buf(buffer, format[i], ibuf), len++, i--;
-				}
-				else
-				{
-					len += function(arguments, buffer, ibuf);
-					i += ev_print_func(format, i + 1);
-				}
-			} i++;
-		}
-		else
-
-		{
-			count += _putchar(format[i]);
-		}
-		i++;
-	}
-
-	va_end(args);
+	putchar(c);
+	count++;
 	return (count);
 }
 
 /**
- * _print_string - Prints a string to stdout
- * @s: Pointer to the string to be printed
- * Return: number of characters printed
+ * print_string - Print a string
+ * @args: va_list containing the string to print
+ * @count: Current character count
+ *
+ * Return: Updated character count
  */
-int _print_string(char *s)
+int print_string(va_list args, int count)
 {
+	char *s = va_arg(args, char *);
+
+	while (*s != '\0')
+	{
+		putchar(*s);
+		s++;
+		count++;
+	}
+	return (count);
+}
+
+/**
+ * _printf - Custom implementation of printf function
+ * @format: Format string containing conversion specifiers
+ *
+ * Return: Number of characters printed
+ */
+int _printf(const char *format, ...)
+{
+	va_list args;
 	int count = 0;
 
-	while (*s)
-	{
-		count += _putchar(*s);
-		s++;
+	va_start(args, format);
 
-			handl_buf(buffer, format[i], ibuf), len++;
-		for (ibuf = len; ibuf > 1024; ibuf -= 1024)
-			;
+	while (*format != '\0')
+	{
+		if (*format == '%')
+		{
+			format++;
+
+			switch (*format)
+			{
+				case 'c':
+					count = print_char(args, count);
+					break;
+
+				case 's':
+					count = print_string(args, count);
+					break;
+
+				case '%':
+					putchar('%');
+					count++;
+					break;
+
+				default:
+					putchar('%');
+					putchar(*format);
+					count += 2;
+					break;
+			}
+		}
+		else
+		{
+			putchar(*format);
+			count++;
+		}
+
+	format++;
 	}
-	print_buf(buffer, ibuf), free(buffer), va_end(arguments);
-	return (len);
+
+va_end(args);
+
+return (count);
 }
