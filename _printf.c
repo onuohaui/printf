@@ -1,30 +1,30 @@
 #include "main.h"
+#include <unistd.h>
 #include <stdarg.h>
 
 /**
- * _printf - Format and print data
- * @format: Format string
+ * _printf - Format and print data according to format string
+ * @format: Character string containing format specifiers
  *
- * Return: Number of chars printed
+ * Return: Number of characters printed
  */
 int _printf(const char *format, ...)
 {
 
 	va_list args;
 
-	va_start(args, format);
-
 	int print_count = 0;
 
-	for (int i = 0; format[i] != '\0'; i++)
-	{
+	int i;
 
+	va_start(args, format);
+
+	for (i = 0; format[i] != '\0'; i++)
+	{
 		if (format[i] == '%')
 		{
-
 			switch (format[i + 1])
 			{
-
 				case 'c':
 					print_count += print_char(args);
 					break;
@@ -37,13 +37,12 @@ int _printf(const char *format, ...)
 					print_count += print_percent(args);
 					break;
 			}
-
-		} else
+		}
+		else
 		{
 			write(1, &format[i], 1);
 			print_count++;
 		}
-
 	}
 
 	va_end(args);
