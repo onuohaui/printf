@@ -1,0 +1,59 @@
+_PRINTF(3)				   Linux Programmer's Manual				 _PRINTF(3)
+
+NAME
+       _printf - formatted output conversion
+
+SYNOPSIS
+       #include "main.h"
+
+       int _printf(const char *format, ...);
+
+DESCRIPTION
+       _printf()  writes  output to stdout under the control of a format string that specifies how subsequent arguments are
+       converted for output.
+
+       Return value: On success, the total number of characters written is returned.
+
+       Format string:
+       %c	prints a single character
+       %s	prints a string 
+       %d	print a decimal (base 10) number
+       %i	print an integer in base 10
+       %b	print an unsigned int in binary
+       %u   print an unsigned decimal (base 10) number
+       %o	print an unsigned int in octal
+       %x	print an unsigned int as a hexadecimal number
+       %X	print an unsigned int as a hexadecimal number with capital letters
+       %%	print a percent sign
+       %r	print a reversed string
+       %R	print a rot13 interpretation of a string
+       %S	print a string with nonprintable characters printed as hexadecimal
+       %p	print an address in hexadecimal
+
+FLAG CHARACTERS
+       #	Add '0', '0x', or '0X' for octal, hex or uppercase hex, respectively
+       -	Left-justify text in field
+       +	Always print sign for numbers
+       space	Print space if no sign printed 
+       0	Pad with zeros instead of spaces
+
+LENGTH MODIFIERS  
+       l	long
+       h	short
+
+PRECISION
+       .number	Minimum number of digits to print for integers
+       .number	Maximum number of characters to print for strings
+
+RETURN VALUE
+       On success, _printf() returns the number of characters printed (excluding the trailing '\0' used to end output to strings).
+
+       On error, -1 is returned.
+
+SEE ALSO
+       printf(3)
+
+COLOPHON
+       This page is part of release 5.05 of the Linux man-pages project.  A description of the project, information about reporting bugs, and the latest version of this page, can be found at https://www.kernel.org/doc/man-pages/.
+
+Linux							2021-03-22						       _PRINTF(3)
