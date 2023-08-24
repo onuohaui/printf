@@ -1,4 +1,5 @@
 #include "main.h"
+#include <string.h>
 
 /**
  * print_binary - Print an unsigned int as binary
@@ -33,7 +34,8 @@ int print_binary(va_list arg)
 int print_reverse(va_list arg)
 {
 	int i, count = 0;
-	char *str = va_arg(arg, char*);
+	char *str = va_arg(arg, char *);
+
 	int len = strlen(str);
 
 	for (i = len - 1; i >= 0; i--)
@@ -54,7 +56,7 @@ int print_rot13(va_list arg)
 {
 	int i, count = 0;
 	char rot13[] = "NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm";
-	char *str = va_arg(arg, char*);
+	char *str = va_arg(arg, char *);
 	int len = strlen(str);
 
 	for (i = 0; i < len; i++)
@@ -79,12 +81,12 @@ int print_rot13(va_list arg)
 int print_nonprint_char(va_list arg)
 {
 	int count = 0;
-	char *str = va_arg(arg, char*);
+	char *str = va_arg(arg, char *);
 	int i = 0;
 
 	while (str[i])
 	{
-		if (!is_printable(str[i]))
+		if (!is_printable((unsigned char)str[i]))
 		{
 			count += _printf("\\x%x", str[i]);
 		}
@@ -106,8 +108,8 @@ int print_nonprint_char(va_list arg)
  */
 int print_pointer(va_list arg)
 {
-	void *p = va_arg(arg, void*);
-	char *str = utoa_hex((unsigned long)p, "", 16);
+	void *p = va_arg(arg, void *);
+	char *str = utoa_hex((unsigned long)(char *)p, "", 16);
 
 	int count = _printf("%s", str);
 

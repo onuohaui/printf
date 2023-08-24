@@ -65,8 +65,9 @@ int strcmp(char *s1, char *s2)
 void puts(char *str)
 {
 	while (*str)
+	{
 		_putchar(*str++);
+	}
 
 	_putchar('\n');
 }
-

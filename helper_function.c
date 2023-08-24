@@ -1,4 +1,5 @@
 #include "main.h"
+#include <string.h>
 
 /**
  * utoa - convert unsigned int to string
@@ -30,10 +31,12 @@ char *utoa(unsigned int num, char *str, int base)
  * @str: pointer to output string
  * @base: base system
  *
- * Return: number of chars printed
+ * Return: pointer to output string
  */
 char *itoa(int num, char *str, int base)
 {
+	char *ptr = str;
+	char *digits = "0123456789ABCDEF";
 	int negative = 0;
 	unsigned int n;
 
@@ -47,10 +50,16 @@ char *itoa(int num, char *str, int base)
 		n = num;
 	}
 
-	utoa(n, str, base);
+	do {
+		*ptr++ = digits[n % base];
+		n /= base;
+	} while (n > 0);
 
 	if (negative)
-		*--str = '-';
+		*ptr++ = '-';
+
+	*ptr = '\0';
+	reverse_string(str);
 
 	return (str);
 }
@@ -91,4 +100,3 @@ void rot13(char *str)
 			str[i] = rot13[str[i] - 'a' + 26];
 	}
 }
-

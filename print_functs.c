@@ -17,7 +17,6 @@ int print_char(va_list arg)
  *
  * Return: number of chars printed
  */
-
 int print_string(va_list arg)
 {
 	int chars = 0;
@@ -40,7 +39,6 @@ int print_string(va_list arg)
  *
  * Return: number of chars printed
  */
-
 int print_percent(va_list arg)
 {
 	return (_putchar('%'));
@@ -62,4 +60,3 @@ int print_int(va_list arg)
 	free(str);
 	return (chars);
 }
-

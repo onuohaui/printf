@@ -1,4 +1,6 @@
 #include "main.h"
+#include <string.h>
+#include <unistd.h>
 
 /**
  * init_print_buffer - Initialize buffer for printing

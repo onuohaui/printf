@@ -9,7 +9,7 @@
 int print_octal(va_list arg)
 {
 	unsigned int num = va_arg(arg, unsigned int);
-	char *str = utoa(num, "", 8);
+	char *str = utoa(num, "0");
 
 	int chars = print_string(str);
 
@@ -26,7 +26,7 @@ int print_octal(va_list arg)
 int print_hex_lower(va_list arg)
 {
 	unsigned int num = va_arg(arg, unsigned int);
-	char *str = utoa(num, "", 16);
+	char *str = utoa(num, "");
 
 	int chars = print_string(str);
 
@@ -43,7 +43,7 @@ int print_hex_lower(va_list arg)
 int print_hex_upper(va_list arg)
 {
 	unsigned int num = va_arg(arg, unsigned int);
-	char *str = utoa_upper(num, "", 16);
+	char *str = utoa_upper(num, "");
 
 	int chars = print_string(str);
 
@@ -60,7 +60,7 @@ int print_hex_upper(va_list arg)
 int print_binary(va_list arg)
 {
 	unsigned int num = va_arg(arg, unsigned int);
-	char *str = utoa(num, "", 2);
+	char *str = utoa(num, "01");
 
 	int chars = print_string(str);
 
