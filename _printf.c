@@ -2,9 +2,7 @@
 
 /* Added function prototypes */
 int fetch_argument_and_print(char specifier,
-		va_list args,
-		format_t *formats);
-
+		va_list args, format_t *formats);
 int print_default_character(char c);
 
 /**
@@ -18,8 +16,6 @@ int _printf(const char *format, ...)
 	format_t formats[] = {
 		{"c", print_char},
 		{"s", print_string},
-		{"d", print_integer},
-		{"i", print_integer},
 		/* ... (other formats here) */
 		{NULL, NULL}
 	};
@@ -30,7 +26,6 @@ int _printf(const char *format, ...)
 
 	va_start(args, format);
 	count = handle_format_specifier(format, args, formats);
-
 	va_end(args);
 
 	return (count);
@@ -76,8 +71,7 @@ int handle_format_specifier(const char *format,
  * Return: Number of characters printed
  */
 int fetch_argument_and_print(char specifier,
-		va_list args,
-		format_t *formats)
+		va_list args, format_t *formats)
 {
 	int j = 0;
 
