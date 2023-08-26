@@ -18,7 +18,9 @@ typedef struct format
 
 /* Function Prototypes for format specifiers */
 
-int handle_format_specifier(const char *format, va_list args, format_t *formats);
+int handle_format_specifier(const char *format,
+		va_list args,
+		format_t *formats);
 
 /* _printf.c */
 int _printf(const char *format, ...);
