@@ -1,7 +1,10 @@
 #include "main.h"
 
 /* Added function prototypes */
-int fetch_argument_and_print(char specifier, va_list args, format_t *formats);
+int fetch_argument_and_print(char specifier,
+		va_list args,
+		format_t *formats);
+
 int print_default_character(char c);
 
 /**
@@ -15,6 +18,8 @@ int _printf(const char *format, ...)
 	format_t formats[] = {
 		{"c", print_char},
 		{"s", print_string},
+		{"d", print_integer},
+		{"i", print_integer},
 		/* ... (other formats here) */
 		{NULL, NULL}
 	};
@@ -25,6 +30,7 @@ int _printf(const char *format, ...)
 
 	va_start(args, format);
 	count = handle_format_specifier(format, args, formats);
+
 	va_end(args);
 
 	return (count);
@@ -49,7 +55,8 @@ int handle_format_specifier(const char *format,
 		if (format[i] == '%' && format[i + 1])
 		{
 			count += fetch_argument_and_print(format[i + 1], args, formats);
-			i++;
+			if (format[i + 1] == 'c' || format[i + 1] == 's' || format[i + 1] == '%')
+				i++;
 		}
 		else
 		{
@@ -68,7 +75,9 @@ int handle_format_specifier(const char *format,
  * @formats: array of format specifiers and corresponding functions
  * Return: Number of characters printed
  */
-int fetch_argument_and_print(char specifier, va_list args, format_t *formats)
+int fetch_argument_and_print(char specifier,
+		va_list args,
+		format_t *formats)
 {
 	int j = 0;
 
@@ -80,7 +89,9 @@ int fetch_argument_and_print(char specifier, va_list args, format_t *formats)
 		}
 		j++;
 	}
-	return (print_default_character('%'));
+
+	write(1, "%", 1);
+	return (print_default_character(specifier));
 }
 
 /**
