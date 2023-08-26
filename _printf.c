@@ -1,8 +1,7 @@
 #include "main.h"
 
 /* Added function prototypes */
-int fetch_argument_and_print(char specifier,
-		va_list args, format_t *formats);
+int fetch_argument_and_print(char specifier, va_list args, format_t *formats);
 int print_default_character(char c);
 
 /**
@@ -50,8 +49,7 @@ int handle_format_specifier(const char *format,
 		if (format[i] == '%' && format[i + 1])
 		{
 			count += fetch_argument_and_print(format[i + 1], args, formats);
-			if (format[i + 1] == 'c' || format[i + 1] == 's' || format[i + 1] == '%')
-				i++;
+			i++;
 		}
 		else
 		{
@@ -70,8 +68,7 @@ int handle_format_specifier(const char *format,
  * @formats: array of format specifiers and corresponding functions
  * Return: Number of characters printed
  */
-int fetch_argument_and_print(char specifier,
-		va_list args, format_t *formats)
+int fetch_argument_and_print(char specifier, va_list args, format_t *formats)
 {
 	int j = 0;
 
@@ -83,9 +80,7 @@ int fetch_argument_and_print(char specifier,
 		}
 		j++;
 	}
-
-	write(1, "%", 1);
-	return (print_default_character(specifier));
+	return (print_default_character('%'));
 }
 
 /**
