@@ -1,63 +1,94 @@
 #include "main.h"
 
-void print_buffer(char buffer[], int *buff_ind);
+/* Added function prototypes */
+int fetch_argument_and_print(char specifier, va_list args, format_t *formats);
+int print_default_character(char c);
 
 /**
- * _printf - Simulates printf.
- * @format: Format string.
- * Return: Count of printed characters.
+ * _printf - Handle the format specifier and dispatch to appropriate functions.
+ * @format: format string containing the characters and specifiers
+ * Return: Number of characters printed
  */
 int _printf(const char *format, ...)
 {
-	int i, printed = 0, printed_chars = 0;
-	int flags, width, precision, size, buff_ind = 0;
-	va_list list;
-	char buffer[BUFF_SIZE];
+	va_list args;
+	format_t formats[] = {
+		{"c", print_char},
+		{"s", print_string},
+		/* ... (other formats here) */
+		{NULL, NULL}
+	};
+	int count = 0;
 
-	if (format == NULL)
+	if (!format || (format[0] == '%' && !format[1]))
 		return (-1);
 
-	va_start(list, format);
+	va_start(args, format);
+	count = handle_format_specifier(format, args, formats);
+	va_end(args);
 
-	for (i = 0; format && format[i] != '\0'; i++)
-	{
-		if (format[i] != '%')
-		{
-			buffer[buff_ind++] = format[i];
-			if (buff_ind == BUFF_SIZE)
-				print_buffer(buffer, &buff_ind);
-			printed_chars++;
-		}
-		else
-		{
-			print_buffer(buffer, &buff_ind);
-			flags = get_flags(format, &i);
-			width = get_width(format, &i, list);
-			precision = get_precision(format, &i, list);
-			size = get_size(format, &i);
-			++i;
-			printed = handle_print(format, &i, list, buffer,
-					flags, width, precision, size);
-			if (printed == -1)
-				return (-1);
-			printed_chars += printed;
-		}
-	}
-
-	print_buffer(buffer, &buff_ind);
-	va_end(list);
-
-	return (printed_chars);
+	return (count);
 }
 
 /**
- * print_buffer - Prints buffer if exists.
- * @buffer: Array of chars.
- * @buff_ind: Index for next char, length.
+ * handle_format_specifier - Handles the parsing of the format string
+ * and dispatches print operations based on format specifiers.
+ * @format: format string containing the characters and specifiers
+ * @args: list of arguments
+ * @formats: array of format specifiers and corresponding functions
+ * Return: Number of characters printed
  */
-void print_buffer(char buffer[], int *buff_ind)
+int handle_format_specifier(const char *format,
+		va_list args,
+		format_t *formats)
 {
-	if (*buff_ind > 0)
-		write(1, &buffer[0], *buff_ind);
-	*buff_ind = 0;
+	unsigned int i = 0, count = 0;
+
+	while (format && format[i])
+	{
+		if (format[i] == '%' && format[i + 1])
+		{
+			count += fetch_argument_and_print(format[i + 1], args, formats);
+			i++;
+		}
+		else
+		{
+			count += print_default_character(format[i]);
+		}
+		i++;
+	}
+	return (count);
+}
+
+/**
+ * fetch_argument_and_print - Fetch the argument corresponding to the
+ * format specifier and print.
+ * @specifier: format specifier character
+ * @args: list of arguments
+ * @formats: array of format specifiers and corresponding functions
+ * Return: Number of characters printed
+ */
+int fetch_argument_and_print(char specifier, va_list args, format_t *formats)
+{
+	int j = 0;
+
+	while (formats[j].fmt)
+	{
+		if (specifier == formats[j].fmt[0])
+		{
+			return (formats[j].f(args));
+		}
+		j++;
+	}
+	return (print_default_character('%'));
+}
+
+/**
+ * print_default_character - Print the character as it is.
+ * @c: character to be printed
+ * Return: Number of characters printed
+ */
+int print_default_character(char c)
+{
+	return (write(1, &c, 1));
 }

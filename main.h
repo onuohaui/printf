@@ -1,23 +1,72 @@
 #ifndef MAIN_H
 #define MAIN_H
 
-#include <stdio.h>
-#include <stdlib.h>
+#include <unistd.h>
 #include <stdarg.h>
+#include <stdlib.h>
 
+/**
+ * struct format - Struct for formats
+ * @fmt: The format
+ * @f: The function associated
+ */
+typedef struct format
+{
+	char *fmt;
+	int (*f)(va_list);
+} format_t;
+
+/* Function Prototypes for format specifiers */
+
+int handle_format_specifier(const char *format, va_list args, format_t *formats);
+
+/* _printf.c */
 int _printf(const char *format, ...);
 
-int _printf_char(const char *format, va_list args);
-int _printf_string(const char *format, va_list args);
-int _printf_int(const char *format, va_list args);
-int _printf_unsigned(const char *format, va_list args);
+/* print_char.c */
+int print_char(va_list args);
 
-int _printf_flag_plus(const char *format, va_list args);
-int _printf_flag_space(const char *format, va_list args);
-int _printf_flag_hash(const char *format, va_list args);
-int _printf_length_modifier_l(const char *format, va_list args);
-int _printf_length_modifier_h(const char *format, va_list args);
+/* print_string.c */
+int print_string(va_list args);
 
-int _printf_custom_r(const char *format, va_list args);
+/* print_percent.c */
+int print_percent(va_list args);
+
+/* print_integer.c */
+int print_integer(va_list args);
+
+/* print_unsigned.c */
+int print_unsigned(va_list args);
+
+/* print_binary.c */
+int print_binary(va_list args);
+int print_binary_recursive(unsigned int n);
+
+/* print_address.c */
+int print_address(va_list args);
+int print_hex_recursive(unsigned long int n);
+
+/* print_special_string.c */
+int print_special_string(va_list args);
+
+/* print_rot13.c */
+int print_rot13(va_list args);
+
+/* print_reverse.c */
+int print_reverse(va_list args);
+
+int print_hex(unsigned char n);
+
+/* Utility Function Prototypes */
+
+char *convert(unsigned int num, int base);
+int _putstr(char *str);
+int _putchar(char c);
+
+/* Buffer-related function prototypes (if implemented) */
+
+int _flush(void);
+int _buffer(char c);
+int _buffer_string(char *s);
 
 #endif /* MAIN_H */
