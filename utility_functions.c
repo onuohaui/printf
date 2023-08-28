@@ -1,91 +1,33 @@
 #include "main.h"
+#include <unistd.h>
 
 /**
- * is_printable - Checks if a char is printable
+ * _putchar - Writes a character to the standard output.
+ * @c: The character to be written.
  *
- * @c: Char to be evaluated.
- *
- * Return: 1 if c is printable, 0 otherwise
+ * Return: If an error occurs - -1.
+ *         Otherwise - 1.
  */
-int is_printable(char c)
+int _putchar(char c)
 {
-	if (c >= 32 && c < 127)
-		return (1);
-
-	return (0);
+	return (write(1, &c, 1));
 }
 
 /**
- * append_hexa_code - Appends ASCII in hexadecimal code to buffer
+ * _putstr - Writes a string to the standard output.
+ * @s: The string to be written.
  *
- * @buffer: Array of chars.
- * @i: Index at which to start appending.
- * @ascii_code: ASCII code.
- *
- * Return: Always 3
+ * Return: The number of characters written.
  */
-int append_hexa_code(char ascii_code, char buffer[], int i)
+int _putstr(char *s)
 {
-	char map_to[] = "0123456789ABCDEF";
+	int count = 0;
 
-	if (ascii_code < 0)
-		ascii_code *= -1;
-
-	buffer[i++] = '\\';
-	buffer[i++] = 'x';
-	buffer[i++] = map_to[ascii_code / 16];
-	buffer[i] = map_to[ascii_code % 16];
-
-	return (3);
-}
-
-/**
- * is_digit - Checks if a char is a digit
- *
- * @c: Char to be evaluated
- *
- * Return: 1 if c is a digit, 0 otherwise
- */
-int is_digit(char c)
-{
-	if (c >= '0' && c <= '9')
-		return (1);
-
-	return (0);
-}
-
-/**
- * convert_size_number - Casts a number to the specified size
- *
- * @num: Number to be casted.
- * @size: Number indicating the type to be casted.
- *
- * Return: Casted value of num
- */
-long int convert_size_number(long int num, int size)
-{
-	if (size == S_LONG)
-		return (num);
-	else if (size == S_SHORT)
-		return ((short)num);
-
-	return ((int)num);
-}
-
-/**
- * convert_size_unsgnd - Casts a number to the specified size
- *
- * @num: Number to be casted
- * @size: Number indicating the type to be casted
- *
- * Return: Casted value of num
- */
-long int convert_size_unsgnd(unsigned long int num, int size)
-{
-	if (size == S_LONG)
-		return (num);
-	else if (size == S_SHORT)
-		return ((unsigned short)num);
-
-	return ((unsigned int)num);
+	while (*s)
+	{
+		_putchar(*s);
+		count++;
+		s++;
+	}
+	return (count);
 }
