@@ -1,9 +1,12 @@
 #include "main.h"
 
+/* Function prototypes */
+int print_hex_recursive(unsigned long int n);
+
 /**
  * print_address - Prints the memory address of a variable.
  * @args: A va_list pointing to the argument variable
- *              whose  memory address will be printed.
+ *              whose memory address will be printed.
  *
  * Return: The number of characters printed.
  */

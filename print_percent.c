@@ -7,11 +7,10 @@
  *
  * Return: the number of characters printed.
  */
-int print_percent(va_list args __attribute__((unused)))
+int print_percent(va_list args)
 {
-	char c = '%';
-
-	write(1, &c, 1);
+	(void)args;
+	_putchar('%');
 
 	return (1);
 }

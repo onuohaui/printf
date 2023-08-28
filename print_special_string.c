@@ -1,5 +1,7 @@
 #include "main.h"
 
+int print_char_as_hex(unsigned char n);
+
 /**
  * print_special_string - Prints a string and replaces any non-printable
  *                        characters with their ASCII value in hexadecimal.
@@ -29,7 +31,7 @@ int print_special_string(va_list args)
 		else
 		{
 			count += _putstr("\\x");
-			count += print_hex((unsigned char)str[i]);
+			count += print_char_as_hex(str[i]);
 		}
 	}
 
@@ -37,12 +39,12 @@ int print_special_string(va_list args)
 }
 
 /**
- * print_hex - Prints a number in hexadecimal form.
+ * print_char_as_hex - Prints a number in hexadecimal form.
  * @n: The unsigned char (number) to be printed.
  *
  * Return: The number of digits printed.
  */
-int print_hex(unsigned char n)
+int print_char_as_hex(unsigned char n)
 {
 	int count = 0;
 	char c;
@@ -60,7 +62,7 @@ int print_hex(unsigned char n)
 
 	if (n / 16)
 	{
-		count += print_hex(n / 16);
+		count += print_char_as_hex(n / 16);
 	}
 
 	c = (n % 16 < 10) ? (n % 16 + '0') : (n % 16 - 10 + 'a');

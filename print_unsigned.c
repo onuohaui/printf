@@ -11,6 +11,11 @@ int print_unsigned(va_list args)
 	unsigned int n = va_arg(args, unsigned int);
 	unsigned int num, temp, count = 0, multiplier = 1;
 
+	if (n == 0)
+	{
+		_putchar('0');
+		return (1);
+	}
 	num = n;
 
 	temp = num;

@@ -16,8 +16,11 @@ int _flush(void)
 
 	if (buf_index > 0)
 	{
-		write(1, buffer, buf_index);
-		num = buf_index;
+		num = write(1, buffer, buf_index);
+		if (num < 0)
+		{
+			return (-1);
+		}
 		buf_index = 0;
 	}
 
@@ -33,7 +36,7 @@ int _flush(void)
  */
 int _buffer(char c)
 {
-	if (buf_index >= BUFFER_SIZE - 1)
+	if (buf_index >= BUFFER_SIZE)
 	{
 		_flush();
 	}

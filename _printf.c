@@ -15,6 +15,18 @@ int _printf(const char *format, ...)
 	format_t formats[] = {
 		{"c", print_char},
 		{"s", print_string},
+		{"d", print_integer},
+		{"i", print_integer},
+		{"%", print_percent},
+		{"o", print_octal},
+		{"u", print_unsigned},
+		{"x", print_hex},
+		{"X", print_hex_upper},
+		{"b", print_binary},
+		{"S", print_pointer},
+		{"p", print_pointer},
+		{"r", print_reverse},
+		{"R", print_rot13},
 		/* ... (other formats here) */
 		{NULL, NULL}
 	};
@@ -46,16 +58,21 @@ int handle_format_specifier(const char *format,
 
 	while (format && format[i])
 	{
-		if (format[i] == '%' && format[i + 1])
+		if (format[i] == '%' && format[i + 1] == '%')
+		{
+			count += print_default_character('%');
+			i += 2;
+		}
+		else if (format[i] == '%' && format[i + 1])
 		{
 			count += fetch_argument_and_print(format[i + 1], args, formats);
-			i++;
+			i += 2;
 		}
 		else
 		{
 			count += print_default_character(format[i]);
+			i++;
 		}
-		i++;
 	}
 	return (count);
 }

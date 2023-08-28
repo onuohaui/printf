@@ -46,7 +46,8 @@ int print_binary_recursive(unsigned int n);
 
 /* print_address.c */
 int print_address(va_list args);
-int print_hex_recursive(unsigned long int n);
+int print_hex_upper(va_list args);
+int print_hex(va_list args);
 
 /* print_special_string.c */
 int print_special_string(va_list args);
@@ -57,13 +58,21 @@ int print_rot13(va_list args);
 /* print_reverse.c */
 int print_reverse(va_list args);
 
-int print_hex(unsigned char n);
-
 /* Utility Function Prototypes */
 
 char *convert(unsigned int num, int base);
 int _putstr(char *str);
 int _putchar(char c);
+
+/* print_octal.c */
+int print_octal(va_list args);
+int print_octal_recursive(unsigned int n);
+
+int print_char_as_hex(unsigned char n);
+
+int print_pointer(va_list args);
+
+int fetch_argument_and_print(char specifier, va_list args, format_t *formats);
 
 /* Buffer-related function prototypes (if implemented) */
 
